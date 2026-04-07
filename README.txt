@@ -6,7 +6,6 @@ auf das ESP32-P4-Ultra Display-Board.
 ## Was ist drin?
 
 | Datei | Zweck |
-|---|---|
 | `bootloader.bin` | Startet den Chip |
 | `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
 | `p4_instrument_cluster.bin` | Die eigentliche Firmware (Display, Logik, UI) |
@@ -45,12 +44,11 @@ Pro Zeile: links auf das `...`-Symbol klicken, die jeweilige
 und ganz links das Häkchen setzen.
 
 | Häkchen | Datei | Adresse |
-|---|---|---|
 | ✓ | `bootloader.bin` | `0x2000` |
 | ✓ | `partition-table.bin` | `0x8000` |
 | ✓ | `p4_instrument_cluster.bin` | `0x20000` |
 
-Einstellungen unten rechts:
+Einstellungen unten:
 - **SPI SPEED:** `80MHz`
 - **SPI MODE:** `DIO`
 - **FLASH SIZE:** `16MB`
