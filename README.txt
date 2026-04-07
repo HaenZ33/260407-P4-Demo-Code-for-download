@@ -17,7 +17,7 @@ auf das ESP32-P4-Ultra Display-Board.
 
 - Windows-PC
 - USB-Kabel (**wichtig:** ein Datenkabel, kein reines Ladekabel!)
-- Waveshare ESP32-P4-Ultra Board
+- ESP32-P4-Ultra Board + Display
 
 ## Schritt-für-Schritt-Anleitung
 
@@ -25,7 +25,6 @@ auf das ESP32-P4-Ultra Display-Board.
 
 - Lade das ZIP herunter und entpacke es an einen Ort
   **ohne Leerzeichen oder Umlaute** im Pfad.
-  Empfehlung: `C:\p4flash\`
 - Schließe das P4-Board per USB an den Rechner an.
 
 ### 2. Flash-Tool starten
