@@ -1,7 +1,7 @@
 # VW T3 Instrument Cluster – Firmware für ESP32-P4
 
 Firmware-Paket zum Flashen des digitalen Kombiinstruments
-auf das Waveshare ESP32-P4-Ultra Display-Board.
+auf das ESP32-P4-Ultra Display-Board.
 
 ## Was ist drin?
 
