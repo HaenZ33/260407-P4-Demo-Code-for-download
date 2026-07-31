@@ -3,7 +3,7 @@
 Digitales Kombiinstrument für den VW T3.
 Firmware-Paket zum Flashen auf das ESP32-P4-Ultra Display-Board.
 
-**Version:** 1.1.1 (Beta) · **Stand:** 23.07.2026
+**Version:** 1.1.4 (Beta) · **Stand:** 31.07.2026
 
 Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 
@@ -13,7 +13,7 @@ Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | `bootloader.bin` | Startet den Chip |
 | `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
-| `vedo_klartext_v1.1.1.bin` | Die eigentliche Firmware (Display, Logik, UI) |
+| `vedo_klartext_v1.1.4.bin` | Die eigentliche Firmware (Display, Logik, UI) |
 | `flash_download_tool.zip` | Das offizielle Flash-Programm von Espressif |
 | `README.md` | Diese Anleitung |
 | `MENU.md` | Übersicht über alle Menüpunkte und ihre Bedeutung |
@@ -54,7 +54,7 @@ und ganz links das Häkchen setzen.
 |---|---|---|
 | ✓ | `bootloader.bin` | `0x2000` |
 | ✓ | `partition-table.bin` | `0x8000` |
-| ✓ | `vedo_klartext_v1.1.1.bin` | `0x20000` |
+| ✓ | `vedo_klartext_v1.1.4.bin` | `0x20000` |
 
 Einstellungen unten:
 
@@ -83,7 +83,7 @@ Einstellungen unten:
   (oder RST-Taste am Board drücken)
 - Das Display sollte jetzt mit der Intro-Animation starten
 - Im Boot-Screen und im Menü unten steht die Version –
-  dort kannst du prüfen, ob wirklich **v1.1.1** geflasht wurde
+  dort kannst du prüfen, ob wirklich **v1.1.4** geflasht wurde
 
 ## Wenn etwas nicht klappt
 

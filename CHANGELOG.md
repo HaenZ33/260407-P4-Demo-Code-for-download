@@ -5,6 +5,64 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.1.4 (Beta) – 31.07.2026
+
+Sammel-Update. Die Zwischenstände 1.1.2 und 1.1.3 sind hier mit enthalten und
+wurden nie einzeln veröffentlicht. Schwerpunkte: automatische Hinterleuchtung,
+Tacho-Fehler behoben, Uhrzeit nach längerer Standzeit.
+
+### Neu
+
+**Automatische Hinterleuchtung (Lichtsensor)**
+- Mit einem VEML7700-Lichtsensor regelt das Display seine Helligkeit jetzt
+  selbst – hell bei Tag, gedimmt bei Nacht.
+- Eigenes Untermenü **HELLIGKEIT** (Doppelklick auf „Helligkeit" im
+  Hauptmenü; ein einfacher Klick bleibt die manuelle Helligkeit):
+  - `Auto-Helligkeit` an/aus
+  - `Tendenz` (−4…+4) – der zentrale „insgesamt heller/dunkler"-Knopf
+  - `Minimum` (3–30 %) – verhindert ein komplett schwarzes Display
+  - `Reaktion` (träge / normal / flott) – wie schnell nachgeregelt wird
+  - `Kurve` – fünf Stützstellen mit Live-Graph und Marker für den aktuell
+    gemessenen Helligkeitswert
+  - `Lichtsensor` – Live-Anzeige zum Einbau-Debugging
+- **„Hier merken":** Auf der Kurven- oder Lichtsensor-Seite so lange drehen,
+  bis die Helligkeit passt, dann lang drücken. Der aktuelle Wert wird auf die
+  passende Stützstelle geschrieben, die Nachbarn ziehen sanft mit. So lässt
+  sich die Regelung ohne Zahlenverständnis einstellen.
+- Der Lichtsensor taucht im Selbsttest beim Start und im Debug-Screen auf.
+
+### Behoben
+
+**Tacho: Fantasiewert beim ersten Puls nach Stillstand**
+- Nach einem Stillstand konnte der erste Magnetpuls sofort einen erfundenen
+  km/h-Wert anzeigen (z. B. 34 km/h aus dem Nichts). Die Anzeige bleibt jetzt
+  bei 0, bis wirklich zwei Pulse gemessen wurden.
+- Der Drehzahlmesser war davon nicht betroffen und ist unverändert.
+
+**Uhrzeit nach längerer Standzeit**
+- Das GPS-Modul sichert seine Bahndaten jetzt vor dem Abstellen dauerhaft.
+  Nach langer Standzeit findet es dadurch schneller wieder Satelliten – die
+  Uhr steht früher.
+- **Es wird nie mehr eine falsche Uhrzeit angezeigt.** Liefert das Modul eine
+  unplausible Zeit, wird sie verworfen; die Uhr zeigt dann weiter
+  „WARTE AUF GPS", bis eine echte Zeit da ist.
+
+### Hinweise
+
+- **Wichtig:** Steht nach dem Einschalten sehr lange „WARTE AUF GPS", obwohl
+  freier Himmel da ist, ist meist die **Stützbatterie am GPS-Modul leer**.
+  Das ist ein Hardware-Thema und lässt sich per Firmware nicht beheben – die
+  Uhrzeit liegt im Modul und geht ohne Stützspannung verloren.
+- Die automatische Hinterleuchtung braucht einen **VEML7700-Sensor**
+  (3,3 V, SDA 28 / SCL 29). Ohne den Sensor ändert sich nichts, die manuelle
+  Helligkeit funktioniert wie bisher.
+- Firmware-Datei heißt jetzt `vedo_klartext_v1.1.4.bin`. Flash-Adressen
+  unverändert – siehe [README.md](README.md).
+- Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.1.4** steht.
+- Status weiterhin **Beta**.
+
+---
+
 ## v1.1.1 (Beta) – 23.07.2026
 
 Patch-Update. Schwerpunkte: zweites GPS-Modul wählbar, schnellerer GPS-Fix,
