@@ -5,6 +5,362 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.2.0 (Beta) – 19.08.2026
+
+Großes Update. Schwerpunkte: **der Tacho zeigte bisher nur die halbe
+Geschwindigkeit** und ist jetzt richtig, die Reifengröße ist einstellbar, die
+Kontrollleuchten im Armaturenbrett funktionieren, und die Geber lassen sich
+einzeln kalibrieren.
+
+Die Versionsnummer springt auf **1.2**, weil mit dieser Firmware das
+**Adapterboard V2** dazugekommen ist – ein 1.1.5 hätte nach reiner
+Fehlerbehebung ausgesehen.
+
+---
+
+### ⚠ Bitte zuerst lesen
+
+**1. Der Tacho zeigt jetzt etwa doppelt so viel wie vorher – das ist der
+korrigierte Wert.**
+Die Firmware rechnete mit einer festen Pauschalzahl (4000 Impulse pro
+Kilometer), richtig sind bei 225/55 R16 rund 1947. Der Tacho zeigte dadurch nur
+**49 %** der echten Geschwindigkeit. Nach dem Update:
+
+- **Reifengröße im Menü eintragen** (SETTINGS → REIFEN), sonst rechnet die
+  Firmware mit dem Standardwert.
+- Danach **einmal gegen GPS gegenprüfen** und bei Abweichung über
+  `Offset` (±10 %) nachtrimmen.
+- Der Tempomat-Ausgang hing an derselben Zahl und war damit ebenfalls um
+  Faktor 2 daneben – das ist mit derselben Korrektur erledigt.
+
+**2. Das Adapterboard V2 wird vorausgesetzt, wenn du den vollen Funktionsumfang
+willst.**
+Ohne das Board läuft die Firmware weiter, aber ohne Kontrollleuchten, ohne
+abschaltbare Sensorversorgung und ohne Lichtsensor. Details unten unter
+„Hinweise".
+
+**3. Zwei Hardware-Änderungen sind Voraussetzung** (beide unten beschrieben):
+der **10k/10k-Spannungsteiler am Ladedrucksensor** und der **R61-Umbau auf dem
+VIEWE-Board**. Ohne den Teiler zeigt der Ladedruck nur die halbe Spanne.
+
+---
+
+### Neu
+
+**Reifengröße im Menü (SETTINGS → REIFEN)**
+- Breite (155–305 mm), Querschnitt (30–85 %), Felge (13–20 Zoll) und ein
+  Feintrimm-**Offset** (−10 … +10 %).
+- Der **Umfang** steht als eigene Zeile darunter und rechnet beim Drehen live
+  mit (Kontrollwert: 225/55 R16 → 2054 mm).
+- Aus diesem Umfang berechnet der Tacho seine Geschwindigkeit – deshalb der
+  Hinweis oben.
+- Passt eine Kombination nicht (z. B. 305/85 R20), wird die Umfang-Zeile rot
+  und die Firmware rechnet ersatzweise mit dem Standardwert weiter.
+
+**Geber-Kalibrierung (SETTINGS → SENSOREN → KALIBRIERUNG)**
+- NTC-Geber streuen ab Werk um ±15 % – beim Kühlwasser sind das bei echten
+  80 °C rund **9 Grad** Anzeigeunterschied von Geber zu Geber. Zu viel, wenn
+  eine Übertemperaturwarnung daran hängt.
+- Je Geber (Kühlwasser, Öltemperatur, Ladeluft vor/nach LLK, Öldruck) gibt es
+  jetzt: `Quelle` · `R-Faktor` · `Offset` · `Ist-Wert` · `Auf Werk zurück`.
+- **Ein Messpunkt genügt:** Geber in kochendes Wasser, `R-Faktor` so drehen,
+  bis der `Ist-Wert` bei 100 °C steht. Der Faktor zieht die Kennlinie über den
+  ganzen Temperaturbereich richtig – anders als ein reiner Offset, der nur an
+  einem Punkt stimmen würde.
+
+**Kennlinien von der SD-Karte**
+- Wer einen Geber im Wasserbad komplett ausmisst, kann die ganze Tabelle als
+  Datei hinterlegen: `/sdcard/cfg/sensor_cal.ini`.
+- **Fehlt die Datei, legt die Firmware beim Start selbst eine kommentierte
+  Vorlage an** – man bekommt also eine korrekt formatierte Datei, ohne das
+  Format kennen zu müssen.
+- Punkt **und** Komma sind als Dezimaltrenner erlaubt (deutsches Excel schreibt
+  `82,4`), die Reihenfolge der Messpunkte ist egal.
+- Neue Menüpunkte `Von SD laden` und `Vorlage auf SD`.
+- Eine fehlerhafte Zeile verwirft nur ihren eigenen Geber; im Menü steht dann
+  `SD-Fehler Z.42` statt der Quelle.
+
+**Kontrollleuchten (nur mit Adapterboard V2)**
+- Instrumentenbeleuchtung, Fernlicht, Blinker, Zündung, Ladekontrolle,
+  Vorglühen und die beiden Öldruckschalter werden jetzt über den I/O-Baustein
+  des Adapterboards eingelesen und als Warnleuchten angezeigt.
+
+**Dynamische Öldruckkontrolle ist scharf**
+- Beide Öldruckschalter (0,3 und 0,9 bar) werden ausgewertet – mit der
+  gegenläufigen Logik des Originals: der obere Schalter **muss** oberhalb der
+  Auswerte-Drehzahl geschlossen sein. Bleibt er offen, warnt das Display.
+  Genau dieser Fall kündigt einen Lagerschaden an, während der 0,3-bar-Schalter
+  noch schweigt.
+- **Drehzahlschwelle einstellbar** (SENSOREN → `Oeldr.-Sch. ab`: 1500 / 1800 /
+  2000 / 2500), weil VW je nach Modell 1500 oder 2000/min verwendet.
+- 3 Sekunden Anlauf-Totzeit nach dem Motorstart, sonst gäbe es bei jedem Start
+  kurz Alarm, bis die Pumpe Druck aufgebaut hat.
+- Ohne Adapterboard V2 melden beide Schalter `N/A` statt „kein Druck" – es gibt
+  also keinen Fehlalarm auf älteren Aufbauten.
+
+**Öldruck-Anzeige (5-Bar-Geber)**
+- Die Kennlinie des verbauten Widerstandsgebers ist eingebaut; bisher wurde der
+  Kanal nur gelesen, aber nicht ausgewertet.
+- Über 5 bar wird weitergerechnet statt abgeschnitten – der hohe Kaltstartdruck
+  ist real und soll sichtbar sein.
+- Kurzschluss und Kabelbruch werden als Elektrikfehler gemeldet, nicht als
+  Druckwert. Und zwar **auch bei stehendem Motor**: vorher zeigte ein Geber mit
+  abgezogenem Stecker brav „MOTOR AUS", der Kabelbruch blieb bis zum nächsten
+  Motorlauf unsichtbar – also ausgerechnet nicht in der Werkstatt.
+- Zum Nutzen muss `Oeldruck` im Sensor-Menü eingeschaltet werden.
+
+**Screen 1: zwei Werteblocks neben den Zeigern**
+- **Links:** Außentemperatur und Kühlwasser. **Rechts:** Öltemperatur und
+  Öldruck.
+- Je Block ein eigener Menüpunkt: `Temp links` (Aus / Luft / Wasser / Beide)
+  und `Temp rechts` (Aus / Temp / Druck / Beide).
+- Werte von Gebern, die im Menü nicht eingeschaltet sind, stehen auf `---`.
+
+**Screen 1: Geschwindigkeitsanzeige mit fünf Modi**
+- `Aus` · `Rad km/h` · `Rad km/h (b)` · `GPS km/h` · `Beide`.
+- `(b)` blendet zusätzlich die dunklen Segmente hinter den Ziffern ein, wie bei
+  einer echten Siebensegmentanzeige. `Beide` zeigt groß das Radsignal und klein
+  darüber GPS.
+
+**Screen 3: Drehzahl-Bogen wahlweise fest**
+- Aus dem Schalter ist eine Auswahl geworden: `Aus` / `Zeiger` / `Voll`.
+  `Voll` stellt den Bogen fest auf 100 %, er dient dann nur noch als ruhige
+  Hintergrundfläche hinter dem Zeiger.
+
+**Tempomat-Ausgang im Menü (SETTINGS → TEMPOMAT)**
+- Der Geschwindigkeits-Ausgang zum Steuergerät war bisher fest an und nur über
+  den Quelltext schaltbar. Jetzt: `Signalausgang` (Hauptschalter),
+  `Impulse/m` (1 · 2 · 4 · 6 · 8 · 16, zusätzlich als `/km` angezeigt),
+  `Im Simulator` (darf die Demo den Ausgang treiben) und `Frequenz`.
+- **Die Frequenzzeile zeigt den tatsächlich am Pin anliegenden Wert**, nicht den
+  gerechneten – steht dort `---`, geht wirklich nichts raus. Damit lässt sich
+  der Ausgang ohne Messgerät prüfen.
+- Der Ausgang liegt jetzt fest auf **GPIO 49**.
+
+**Automatischer Tiefschlaf (SETTINGS → ENERGIE)**
+- Neu: `Tiefschlaf nach` – von 1 min in feinen Stufen bis 12 h, oder `Aus`.
+  Bisher war der Tiefschlaf nur von Hand über „Tiefschlaf jetzt" erreichbar.
+- Neu: `Notweckung` – der Sicherheitstimer, der das Gerät aus dem Tiefschlaf
+  zurückholt (Aus / 1 min / 5 min / 15 min / 1 h / 12 h).
+- **Beide stehen ab Werk so, dass sich nichts ändert:** `Tiefschlaf nach` ist
+  aus, die Notweckung steht wie bisher auf 60 s. Wer beides zusammen abschaltet,
+  bekommt eine Warnung ins Protokoll – dann holt das Gerät nur noch die
+  Weckleitung zurück.
+
+**Demo-Modus: vier echte Fahrzyklen (SYSTEM → Run Demo)**
+- Aus dem An/Aus-Schalter ist eine Auswahl geworden:
+  `Aus` · `Stadt` · `Ueberland` · `Autobahn` · `Vollgas`.
+- Statt der alten Endlosschleife (Vollgas bis 140, Vollbremsung, von vorn) fährt
+  jetzt ein Fahrermodell: Schaltvorgänge mit Schaltloch, Kickdown,
+  Überholvorgänge, Halt an der Ampel mit abgestelltem Motor, Kaltstart mit
+  Vorglühen.
+- **Die Temperaturen verhalten sich wie im echten Fahrzeug:** das Kühlwasser
+  hing bisher an der Drehzahl und wanderte sichtbar mit dem Drehzahlmesser mit.
+  Jetzt wird eine Wärmebilanz gerechnet – betriebswarm bewegt sich die Anzeige
+  um höchstens 1 Grad in 10 Sekunden.
+- Blinker, Fernlicht, Vorglühen und Ladekontrolle laufen in der Demo mit; auch
+  eine Überladedruck-Störung kommt gelegentlich vor.
+- Die Uhr und der Tageskilometerzähler bleiben im Demo-Betrieb jetzt stehen –
+  vorher hat der Simulator sie überschrieben bzw. beim Beenden genullt.
+
+**Konfiguration auf die SD-Karte sichern (LOGGER → `Config sichern`)**
+- Schreibt **alle** Einstellungen des Geräts als lesbare Datei nach
+  `/sdcard/cfg/vedo_config.ini`. Damit ist der Stand erstmals sicherbar; bisher
+  war nach einem Speicher-Reset alles weg.
+- Zeigt das Ergebnis direkt hinter dem Menüpunkt an (`OK` / `KEINE SD` /
+  `FEHLER`).
+- Zurückspielen ist bewusst noch nicht dabei – das kommt später.
+
+**FPS-Anzeige statt Sys Monitor**
+- Der alte Systemmonitor meldete dauerhaft 100 % CPU. Der Wert war schlicht
+  falsch (die Grafikbibliothek konnte ihre Leerlaufzeit nicht sehen).
+- Stattdessen jetzt eine schlichte Bildrate auf den beiden Cluster-Screens,
+  farbcodiert: grün ab 20, gelb ab 10, darunter rot. Der Menüpunkt heißt jetzt
+  `FPS Anzeige`.
+
+---
+
+### Verbessert
+
+**Der Tacho reagiert im unteren Bereich viel schneller**
+- Die Anzeige hinkte bei niedrigem Tempo spürbar hinterher, oben nicht.
+  Ursache: gemittelt wurde über eine feste Anzahl **Impulse** – und die dauern
+  bei 5 km/h zehnmal so lange wie bei 50. Jetzt wird über eine feste **Zeit**
+  gemittelt.
+- Nachlauf beim Beschleunigen (Messung gegen die alte Kette):
+
+  | Bereich | vorher | jetzt |
+  |---|---|---|
+  | 2 → 12 km/h | 1,35 s | **0,42 s** |
+  | 5 → 20 km/h | 0,93 s | **0,36 s** |
+  | 15 → 35 km/h | 0,57 s | **0,32 s** |
+  | 40 → 70 km/h | 0,38 s | **0,27 s** |
+
+- Stop-and-Go zwischen 3 und 8 km/h: 0,50 s → **0,04 s**.
+- Beim Anhalten **rollt die Anzeige weich aus**, statt stehenzubleiben und dann
+  hart auf 0 zu springen.
+- Ein dauerhaft schwacher Magnet am Radsensor führte bisher zu 20 % zu wenig
+  Anzeige (40 statt 50 km/h) – der fehlende Impuls wird jetzt erkannt und
+  eingerechnet.
+
+**Schnelles Durchdrehen der Screens**
+- Bisher löste **jede** Encoder-Raste einen kompletten Screen-Wechsel mit
+  Auf- und Abblenden aus. Wer aus Versehen 10 Rasten drehte, sah eine über
+  10 Sekunden lange Kette von Überblendungen durch alle Zwischenscreens und
+  konnte in der Zeit nichts bedienen.
+- Jetzt werden Rasten gesammelt: nach 120 ms Ruhe läuft **genau ein** Wechsel
+  zum Ziel, Zwischenscreens werden übersprungen. Zurückdrehen wird verrechnet.
+- Die Überblendung ist außerdem kürzer (rund 650 statt 1050 ms) und lässt sich
+  durch erneutes Drehen abbrechen.
+
+**Standby-Uhr blendet weich auf**
+- Der Übergang zur Uhr lief in zehn sichtbaren Stufen. Jetzt blendet nicht nur
+  das Licht, sondern auch der Uhr-Inhalt selbst weich auf: ausblenden,
+  eine halbe Sekunde Schwarz, dann kommt die Uhr.
+- Beim Aufwachen aus dem Schlaf geht es bewusst schneller – da wartet jemand.
+
+**Warnbanner passen jetzt ins Display**
+- Vier Meldungen waren länger als die vorgesehene Breite und wuchsen einfach
+  über den Rand hinaus. Die Texte sind gekürzt (`Oeldruck NIEDRIG`,
+  `Kuehlwasser HEISS`, `Ladedruck HOCH`, `Tank RESERVE`, Sensorfehler als
+  `Sensor: COOLANT`), und ein künftig zu langer Text läuft innerhalb der Box
+  durch, statt aus dem Bild zu wachsen.
+
+**Kleinere Anzeigesachen**
+- Die Systemtemperatur wird ohne Nachkommastelle angezeigt – die Stelle war
+  erfunden, der Sensor ist mit ±2 °C spezifiziert.
+- Kühlwasser- und Tankzeiger lassen sich nicht mehr abschalten. Das sind die
+  klassischen Pflichtinstrumente; abschaltbar zu sein war eher eine Fußangel.
+- Der Ladedrucksensor ist auf einen **Bosch TMAP 4 bar** (VW 04L 906 051 C)
+  gewechselt. Der Nullpunkt wird jetzt bei stehendem Motor automatisch
+  nachgeführt – die Anzeige stimmt damit bei jedem Wetter und auf jeder
+  Passhöhe.
+
+---
+
+### Behoben
+
+**Der Tacho zeigte nur die halbe Geschwindigkeit**
+- Siehe ganz oben. Betraf auch den Tempomat-Ausgang.
+
+**Auf der SD-Karte landete gar nichts**
+- Der Datenlogger und die GPS-Track-Aufzeichnung schlugen **immer** fehl, weil
+  lange Dateinamen nicht aktiviert waren – und die Dateien heißen nun mal
+  `2026-08-19.csv`. Im Protokoll stand nur „fopen fehlgeschlagen", was wie ein
+  Kartenproblem aussieht. Beides funktioniert jetzt.
+
+**Abgeschaltete Anzeigen kamen nach dem Tiefschlaf zurück**
+- Gemeldet als „nach dem Deep Sleep sind die Anzeigen wieder da, obwohl das Menü
+  Aus sagt". Dahinter steckten zwei Fehler, und beide trafen **jeden Kaltstart**,
+  nicht nur den Tiefschlaf: die gespeicherten Einstellungen wurden zwar geladen,
+  aber erst beim nächsten Schließen des Menüs angewendet.
+
+**Das Gerät wachte aus dem Tiefschlaf „spontan" auf**
+- Es war der eigene Sicherheitstimer: fest auf 60 Sekunden, ohne Weg zurück in
+  den Tiefschlaf. Das Gerät weckte sich also jede Minute selbst und blieb dann
+  wach. Der Timer ist jetzt der Menüpunkt `Notweckung` und einstellbar.
+
+**Das Cluster wachte im Stand von allein auf**
+- Eine Phantom-Geschwindigkeit von 9 km/h holte den Cluster bei stehendem
+  Fahrzeug alle paar Minuten aus dem Schlaf – jedes Mal mit komplettem
+  Display-Neuaufbau. Ursache war eine Zeitmessung, die im Schlaf stehenbleibt.
+
+**Die Außentemperatur blieb nach dem Schlafen weg**
+- Der Fühler (DS18B20) war nach dem ersten Aufwachen bis zum nächsten Neustart
+  tot. Der Bus wird jetzt nach dem Aufwachen neu aufgebaut.
+
+**Der Blinker hinkte 500 ms hinterher**
+- Der Interrupt des I/O-Bausteins auf dem Adapterboard kam nie an – der
+  Herstellerschaltplan nennt den falschen Anschluss. Alles funktionierte
+  scheinbar, nur eben träge über den Sicherheits-Poll. Sichtbar war das am
+  Blinker-Telltale, das dem Relaistakt nicht folgte.
+
+**Alle 30 Sekunden brach die Bildrate ein**
+- Die Diagnose-Ausgabe lief im selben Task wie die Zeitbasis der Grafik. Sie
+  läuft jetzt getrennt und mit niedriger Priorität.
+
+**Öltemperatur: abgezogener Stecker war nicht zu erkennen**
+- Ein eingeschalteter Geber mit abgezogenem Stecker war von „gar kein Geber
+  verbaut" nicht zu unterscheiden (beides grau). Jetzt wird der Kabelbruch als
+  roter Fehler gemeldet.
+
+**Weitere Kleinigkeiten**
+- Die Kontrollleuchten und das Warnbanner wurden 30-mal pro Sekunde neu
+  gezeichnet, auch wenn sich gar nichts änderte.
+- Die Demo startete direkt in die Demo, wenn die Menü-Initialisierung
+  fehlschlug – und blockierte damit jeden Standby.
+- Die GNSS-Meldung „Unplausible Modul-Zeit" kam sechsmal pro Minute ins
+  Protokoll, wenn das Gerät ohne Empfang auf dem Basteltisch stand.
+
+---
+
+### Hinweise
+
+**Was du nach dem Update einmal prüfen solltest**
+
+1. **Reifengröße eintragen** (SETTINGS → REIFEN) und den Tacho gegen GPS
+   gegenprüfen.
+2. Das Cluster startet je nach vorherigem Screen einmalig auf einem anderen –
+   Screen 2 ist entfallen (er war im Kern ein Screen 1 mit Tacho und Ladedruck,
+   dessen Funktionen jetzt auf Screen 1 sitzen). Ein Encoder-Klick korrigiert
+   das dauerhaft.
+3. Ein paar Menü-Häkchen können verrutscht sein, weil sich die Reihenfolge der
+   Punkte geändert hat – vor allem `Uhrzeit` auf Screen 1 kommt einmal
+   eingeschaltet hoch. Einmal durchklicken räumt das auf.
+4. Wenn du die Öldruckanzeige nutzen willst: `Oeldruck` unter SENSOREN
+   einschalten.
+
+**Adapterboard V2**
+
+Ab dieser Version ist das Adapterboard V2 die vorgesehene Trägerplatine. Die
+Firmware prüft die Baugruppen beim Start einzeln und läuft ohne sie weiter –
+„V2 nötig" gilt für den *Funktionsumfang*, nicht für die Lauffähigkeit. Ohne
+das Board fehlen:
+
+- alle **Kontrollleuchten** aus dem I/O-Baustein (Blinker, Fernlicht, Zündung,
+  Ladekontrolle, Vorglühen, Instrumentenbeleuchtung, beide Öldruckschalter),
+- die **abschaltbare Sensorversorgung** (die Geber sind dann dauerhaft
+  bestromt, auch im Schlaf),
+- der **Lichtsensor** für die automatische Hinterleuchtung.
+
+**Zwei Hardware-Änderungen sind Voraussetzung**
+
+- **10k/10k-Spannungsteiler am Ladedrucksensor.** Ohne ihn zeigt die Firmware
+  nur die halbe Spanne, der Ladedruck läuft also deutlich zu niedrig. Prüfen
+  ohne Rechnerei: Rohspannung auf dem Debug-Screen bei Motor aus vorher
+  notieren – nach dem Umbau muss dort exakt die Hälfte stehen.
+- **R61 auf dem VIEWE-Board umgelötet** (10k jetzt als Pulldown nach Masse
+  statt als Pull-up). Ohne den Umbau läuft der Funk-Coprozessor im Tiefschlaf
+  weiter. Achtung für später: der Coprozessor kommt danach nur noch hoch, wenn
+  die Firmware ihn einschaltet.
+
+**Was noch offen ist**
+
+- Der **Ruhestrom im Tiefschlaf** liegt bei 8,4 mA statt der angestrebten
+  1,1–1,3 mA. Der Schlafpfad selbst ist geprüft und sauber – zwischen Light
+  Sleep (10,2 mA) und Tiefschlaf liegen nur 1,8 mA, der Verbraucher sitzt also
+  aller Wahrscheinlichkeit nach auf der Trägerplatine und nicht in der Firmware.
+- Die **Steigung der Öldruck-Kennlinie** ist noch nicht gegen einen
+  Referenzdruck geprüft; der Nullpunkt stimmt (gemessen 0,289 V gegen 0,300 V
+  laut Datenblatt).
+- Beim **Ladedruck** steckt noch ein Korrekturfaktor von 15 % drin, der gegen
+  das VDO-Instrument abgeglichen wurde. Woher die Abweichung kommt, ist erst zu
+  einem knappen Viertel erklärt – das gehört nach dem Teiler-Umbau erneut
+  geprüft.
+- Im Demo-Betrieb zeigen Kühlwasser, Öltemperatur, Öldruck und die beiden
+  Ladelufttemperaturen im Live Monitor einen Sensorfehler an. Der Simulator
+  liefert für diese Geber keine Rohspannung – im Fahrbetrieb ist davon nichts
+  betroffen.
+
+**Sonstiges**
+
+- Firmware-Datei heißt jetzt `vedo_klartext_v1.2.0.bin`. Flash-Adressen
+  unverändert – siehe [README.md](README.md).
+- Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.2.0** steht.
+- Status weiterhin **Beta**.
+
+---
+
 ## v1.1.4 (Beta) – 31.07.2026
 
 Sammel-Update. Die Zwischenstände 1.1.2 und 1.1.3 sind hier mit enthalten und
