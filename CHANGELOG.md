@@ -38,8 +38,10 @@ Ab dem nächsten Update läuft alles über die Karte.
 ### Neu
 
 **Update über die SD-Karte**
-- Neue Firmware auf die Karte kopieren (Dateiname `vedo_klartext.bin`
-  unverändert lassen), Karte einstecken, Zündung an.
+- Im Release die Datei **ohne** Versionsnummer im Namen herunterladen
+  (`vedo_klartext.bin`), unverändert auf die Karte kopieren, Karte einstecken,
+  Zündung an. Die versionierte Datei `vedo_klartext_v1.3.0.bin` ist dieselbe
+  Firmware, wird auf der Karte aber nicht erkannt – sie ist für das Flash-Tool.
 - Das Cluster zeigt beim Start, welche Version auf der Karte liegt und welche
   gerade läuft, und zählt zehn Sekunden herunter. Wer nichts tut, bekommt das
   Update; ein Druck auf den Encoder überspringt es.

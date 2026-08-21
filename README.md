@@ -13,7 +13,8 @@ Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | `bootloader.bin` | Startet den Chip |
 | `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
-| `vedo_klartext_v1.3.0.bin` | Die eigentliche Firmware (Display, Logik, UI) |
+| `vedo_klartext_v1.3.0.bin` | Die eigentliche Firmware – für das Flash-Tool |
+| `vedo_klartext.bin` | Dieselbe Firmware für das Update über die SD-Karte |
 | `otadata.bin` | **Neu ab 1.3.0** – merkt sich, welche Firmware gestartet wird |
 | `flash_download_tool.zip` | Das offizielle Flash-Programm von Espressif |
 | `README.md` | Diese Anleitung |
@@ -117,8 +118,14 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
 
 **So geht ein Update ab jetzt:**
 
-1. Die Datei `vedo_klartext.bin` aus dem neuen Release herunterladen.
-   **Nicht umbenennen** – der Name muss genau so bleiben.
+1. Im Release die Datei **`vedo_klartext.bin`** herunterladen – die **ohne**
+   Versionsnummer im Namen. Sie liegt dort genau für diesen Zweck neben der
+   versionierten Datei.
+   **Nicht umbenennen** – das Cluster sucht exakt nach diesem Namen.
+
+   > Die Datei `vedo_klartext_v1.3.0.bin` ist inhaltlich dieselbe Firmware,
+   > aber nur für den Weg über das Flash-Tool gedacht. Auf der SD-Karte wird
+   > sie nicht erkannt.
 2. Die Datei auf die SD-Karte kopieren, direkt in den Hauptordner
    (ein Unterordner `update` geht auch).
 3. Karte ins Cluster stecken, Zündung an.
