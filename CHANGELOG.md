@@ -5,6 +5,83 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.3.0 (Beta) – 20.08.2026
+
+**Ab dieser Version aktualisiert sich das Cluster selbst von der SD-Karte.**
+Datei drauf, Karte rein, Zündung an – das war's. Das Gerät muss dafür nicht
+mehr ausgebaut und an den Rechner getragen werden.
+
+---
+
+### ⚠ Bitte zuerst lesen
+
+**Dieses eine Update geht noch über das Kabel – und mit einer Zeile mehr als
+sonst.**
+
+Die Speicheraufteilung des Chips hat sich geändert, damit zwei Firmware-Stände
+nebeneinander Platz haben. Deshalb reicht es diesmal nicht, nur die Firmware
+aufzuspielen:
+
+- Im Flash-Tool kommt eine **vierte Zeile** dazu: `otadata.bin` auf die
+  Adresse `0x11000`. An dieser Stelle lagen bisher Reste, mit denen die neue
+  Firmware nichts anfangen kann.
+- **Das „ERASE"-Häkchen bitte nicht setzen.** Kilometerstand, Reifengröße,
+  Geber-Kalibrierung und alle Menü-Einstellungen bleiben sonst nicht erhalten.
+  Mit der normalen Tabelle überstehen sie den Umstieg.
+
+Die genaue Tabelle steht in der [README.md](README.md) unter Schritt 3.
+
+Ab dem nächsten Update läuft alles über die Karte.
+
+---
+
+### Neu
+
+**Update über die SD-Karte**
+- Neue Firmware auf die Karte kopieren (Dateiname `vedo_klartext.bin`
+  unverändert lassen), Karte einstecken, Zündung an.
+- Das Cluster zeigt beim Start, welche Version auf der Karte liegt und welche
+  gerade läuft, und zählt zehn Sekunden herunter. Wer nichts tut, bekommt das
+  Update; ein Druck auf den Encoder überspringt es.
+- Während der Installation läuft ein Fortschrittsbalken, danach startet das
+  Gerät allein neu. Dauer: 20 bis 40 Sekunden.
+- **Die Karte darf dauerhaft stecken bleiben.** Das Cluster erkennt, ob die
+  Datei die ohnehin laufende Firmware ist, und fragt dann nicht wieder.
+  Umbenennen oder Löschen ist nicht nötig.
+
+**Sicherheitsnetz beim Update**
+- Startet eine frisch installierte Firmware nicht sauber durch, holt das Gerät
+  beim nächsten Einschalten von selbst die vorherige Version zurück.
+- Geht während der Installation die Zündung aus, ist das folgenlos – bis zum
+  Schluss läuft die alte Firmware, erst ganz am Ende wird umgeschaltet.
+- Beschädigte Dateien, abgebrochene Downloads und Firmware für andere Geräte
+  werden vor dem ersten geschriebenen Byte erkannt und abgewiesen.
+
+### Verbessert
+
+**Das Startbild blendet nachts nicht mehr**
+- Während der Intro-Animation ist die Hintergrundbeleuchtung auf ein Viertel
+  gedeckelt. Wer ohnehin dunkler eingestellt hat, sieht unverändert seinen
+  eigenen Wert – heller als eingestellt wird das Startbild nie.
+- Danach fährt die Helligkeit weich auf den eingestellten Wert hoch, statt zu
+  springen. Der Übergang passiert noch auf dem schwarzen Hintergrund, sodass
+  der erste Screen gleich richtig hell erscheint.
+
+**Automatische Helligkeit kann dunkler**
+- Die untere Grenze lässt sich jetzt bis auf 1 % stellen (vorher 3 %). Für
+  sehr dunkle Nachtfahrten waren 3 % noch zu hell.
+
+### Hinweise
+
+- Am Menü hat sich in dieser Version nichts geändert – die
+  [MENU.md](MENU.md) gilt unverändert weiter.
+- Der Weg über das Flash-Tool bleibt als Notnagel bestehen, falls einmal beide
+  Firmware-Stände beschädigt sein sollten.
+- Für den SD-Weg wird eine eingelegte SD-Karte gebraucht. Ohne Karte läuft das
+  Cluster normal weiter, kann sich dann aber nicht selbst aktualisieren.
+
+---
+
 ## v1.2.0 (Beta) – 19.08.2026
 
 Großes Update. Schwerpunkte: **der Tacho zeigte bisher nur die halbe
