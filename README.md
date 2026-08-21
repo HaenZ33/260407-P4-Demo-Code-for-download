@@ -3,7 +3,7 @@
 Digitales Kombiinstrument für den VW T3.
 Firmware-Paket zum Flashen auf das ESP32-P4-Ultra Display-Board.
 
-**Version:** 1.3.0 (Beta) · **Stand:** 20.08.2026
+**Version:** 1.3.1 (Beta) · **Stand:** 21.08.2026
 
 Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 
@@ -13,7 +13,7 @@ Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | `bootloader.bin` | Startet den Chip |
 | `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
-| `vedo_klartext_v1.3.0.bin` | Die eigentliche Firmware – für das Flash-Tool |
+| `vedo_klartext_v1.3.1.bin` | Die eigentliche Firmware – für das Flash-Tool |
 | `vedo_klartext.bin` | Dieselbe Firmware für das Update über die SD-Karte |
 | `otadata.bin` | **Neu ab 1.3.0** – merkt sich, welche Firmware gestartet wird |
 | `flash_download_tool.zip` | Das offizielle Flash-Programm von Espressif |
@@ -57,7 +57,7 @@ und ganz links das Häkchen setzen.
 | ✓ | `bootloader.bin` | `0x2000` |
 | ✓ | `partition-table.bin` | `0x8000` |
 | ✓ | `otadata.bin` | `0x11000` |
-| ✓ | `vedo_klartext_v1.3.0.bin` | `0x20000` |
+| ✓ | `vedo_klartext_v1.3.1.bin` | `0x20000` |
 
 > **Die vierte Zeile (`otadata.bin`) ist neu und beim Update von einer älteren
 > Version wichtig.** An dieser Stelle im Speicher lagen bisher Reste, mit denen
@@ -96,9 +96,9 @@ Einstellungen unten:
   (oder RST-Taste am Board drücken)
 - Das Display sollte jetzt mit der Intro-Animation starten
 - Im Boot-Screen und im Menü unten steht die Version –
-  dort kannst du prüfen, ob wirklich **v1.3.0** geflasht wurde
+  dort kannst du prüfen, ob wirklich **v1.3.1** geflasht wurde
 
-### 7. Einmalig nach dem Update auf v1.3.0
+### 7. Einmalig nach dem Update auf v1.3.x
 
 - **Kilometerstand und Einstellungen prüfen.** Sie sollten den Umstieg
   unbeschadet überstanden haben – die Firmware lässt den Speicherbereich mit
@@ -123,7 +123,7 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
    versionierten Datei.
    **Nicht umbenennen** – das Cluster sucht exakt nach diesem Namen.
 
-   > Die Datei `vedo_klartext_v1.3.0.bin` ist inhaltlich dieselbe Firmware,
+   > Die Datei `vedo_klartext_v1.3.1.bin` ist inhaltlich dieselbe Firmware,
    > aber nur für den Weg über das Flash-Tool gedacht. Auf der SD-Karte wird
    > sie nicht erkannt.
 2. Die Datei auf die SD-Karte kopieren, direkt in den Hauptordner

@@ -5,6 +5,25 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.3.1 (Beta) – 21.08.2026
+
+**Testrelease – funktional identisch zu 1.3.0.** In der Firmware selbst hat
+sich nichts geändert, außer der Versionsnummer.
+
+Diese Version existiert aus einem einzigen Grund: Das Cluster installiert ein
+Update von der SD-Karte nur dann, wenn sich die Datei vom gerade laufenden
+Stand unterscheidet. Um den neuen SD-Weg unter echten Bedingungen einmal
+durchzuspielen, braucht es also eine zweite Versionsnummer – sonst gibt es
+nichts zu installieren.
+
+**Wer 1.3.0 laufen hat, verpasst durch Überspringen nichts.** Wer den
+SD-Update-Weg selbst ausprobieren möchte, nimmt sie als Testkandidat: Datei
+`vedo_klartext.bin` aus diesem Release auf die Karte, Karte rein, Zündung an.
+Der Ablauf steht in der [README.md](README.md) unter „Update über die
+SD-Karte".
+
+---
+
 ## v1.3.0 (Beta) – 20.08.2026
 
 **Ab dieser Version aktualisiert sich das Cluster selbst von der SD-Karte.**
