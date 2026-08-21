@@ -3,7 +3,7 @@
 Digitales Kombiinstrument für den VW T3.
 Firmware-Paket zum Flashen auf das ESP32-P4-Ultra Display-Board.
 
-**Version:** 1.3.1 (Beta) · **Stand:** 21.08.2026
+**Version:** 1.3.2 (Beta) · **Stand:** 21.08.2026
 
 Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 
@@ -13,7 +13,7 @@ Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 |---|---|
 | `bootloader.bin` | Startet den Chip |
 | `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
-| `vedo_klartext_v1.3.1.bin` | Die eigentliche Firmware – für das Flash-Tool |
+| `vedo_klartext_v1.3.2.bin` | Die eigentliche Firmware – für das Flash-Tool |
 | `vedo_klartext.bin` | Dieselbe Firmware für das Update über die SD-Karte |
 | `otadata.bin` | **Neu ab 1.3.0** – merkt sich, welche Firmware gestartet wird |
 | `flash_download_tool.zip` | Das offizielle Flash-Programm von Espressif |
@@ -57,7 +57,7 @@ und ganz links das Häkchen setzen.
 | ✓ | `bootloader.bin` | `0x2000` |
 | ✓ | `partition-table.bin` | `0x8000` |
 | ✓ | `otadata.bin` | `0x11000` |
-| ✓ | `vedo_klartext_v1.3.1.bin` | `0x20000` |
+| ✓ | `vedo_klartext_v1.3.2.bin` | `0x20000` |
 
 > **Die vierte Zeile (`otadata.bin`) ist neu und beim Update von einer älteren
 > Version wichtig.** An dieser Stelle im Speicher lagen bisher Reste, mit denen
@@ -96,7 +96,7 @@ Einstellungen unten:
   (oder RST-Taste am Board drücken)
 - Das Display sollte jetzt mit der Intro-Animation starten
 - Im Boot-Screen und im Menü unten steht die Version –
-  dort kannst du prüfen, ob wirklich **v1.3.1** geflasht wurde
+  dort kannst du prüfen, ob wirklich **v1.3.2** geflasht wurde
 
 ### 7. Einmalig nach dem Update auf v1.3.x
 
@@ -123,7 +123,7 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
    versionierten Datei.
    **Nicht umbenennen** – das Cluster sucht exakt nach diesem Namen.
 
-   > Die Datei `vedo_klartext_v1.3.1.bin` ist inhaltlich dieselbe Firmware,
+   > Die Datei `vedo_klartext_v1.3.2.bin` ist inhaltlich dieselbe Firmware,
    > aber nur für den Weg über das Flash-Tool gedacht. Auf der SD-Karte wird
    > sie nicht erkannt.
 2. Die Datei auf die SD-Karte kopieren, direkt in den Hauptordner
@@ -153,6 +153,31 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
 
 Der Weg über das Flash-Tool oben bleibt als Notnagel bestehen – gebraucht wird
 er im Normalfall nicht mehr.
+
+### Zurück auf eine ältere Version
+
+Geht ebenfalls über die Karte, solange das Ziel **1.3.0 oder neuer** ist.
+Einfach die ältere `vedo_klartext.bin` auf die Karte legen.
+
+Das Cluster behandelt einen Rückschritt aber bewusst anders als ein Update:
+
+- Der Titel lautet **„FIRMWARE ZURUECKSETZEN"**, hinter der Version steht
+  **(AELTER)**.
+- **Der Countdown installiert hier nicht.** Läuft er ab, passiert nichts und
+  das Cluster startet normal. Zum Zurücksetzen musst du den Encoder **drücken**.
+
+Das ist Absicht: eine vergessene Karte mit einem alten Stand soll das Cluster
+nicht im Vorbeifahren zurückdrehen.
+
+**Auf Versionen vor 1.3.0 geht es nicht über die Karte.** Sie werden abgewiesen,
+und das Cluster startet normal weiter. Der Grund: diese Stände wissen noch
+nichts vom Update-Mechanismus und können sich nach dem Aufspielen nicht selbst
+bestätigen. Sie ließen sich zwar schreiben und würden auch einmal starten –
+beim nächsten Einschalten holt das Gerät aber von allein die vorherige Version
+zurück. Ein Update, das erfolgreich aussieht und sich später still selbst
+rückgängig macht, ist schlechter als eines, das gleich nein sagt.
+
+Wer wirklich auf 1.2.x oder älter zurück will, nimmt dafür das Flash-Tool.
 
 ## Wenn etwas nicht klappt
 

@@ -5,6 +5,51 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.3.2 (Beta) – 21.08.2026
+
+**Fehlerbehebung am neuen SD-Update-Weg: Zurückgehen auf eine ältere Version
+ist jetzt sauber geregelt.** Wer 1.3.0 frisch aufgespielt hat und nicht
+zurückgehen will, kann diese Version trotzdem mitnehmen – sie ändert sonst
+nichts.
+
+---
+
+### Behoben
+
+**Firmware vor 1.3.0 wird nicht mehr von der Karte installiert**
+- Bisher wurden 1.2.0 und ältere Stände von der Karte angenommen und
+  aufgespielt. Das Ergebnis war schlechter als eine Ablehnung: die
+  Installation lief durch, das Gerät startete, alles wirkte normal – und beim
+  nächsten Einschalten war die neue Version wieder da.
+- Der Grund: diese alten Stände wissen nichts vom Update-Mechanismus und
+  können sich nach dem Aufspielen nicht selbst als lauffähig melden. Genau
+  darauf wartet aber die Rückfall-Sicherung, und ohne diese Meldung holt sie
+  die vorherige Version zurück.
+- Jetzt sagt das Cluster gleich nein und startet normal weiter. Wer wirklich
+  auf 1.2.x zurück will, nimmt das Flash-Tool.
+
+**Ein Rückschritt passiert nur noch auf ausdrücklichen Knopfdruck**
+- Zurück auf 1.3.0 oder neuer bleibt möglich – ein Weg zurück auf einen
+  funktionierenden Stand muss es geben.
+- Das Cluster zeigt dabei **„FIRMWARE ZURUECKSETZEN"** und **(AELTER)** hinter
+  der Version, und **der Countdown installiert nicht mehr von allein**. Läuft
+  er ab, passiert nichts; zum Zurücksetzen drückst du den Encoder.
+- Vorher hätte eine vergessene Karte mit einem alten Stand das Cluster im
+  Vorbeifahren zurückgedreht.
+
+Der genaue Ablauf steht in der [README.md](README.md) unter „Zurück auf eine
+ältere Version".
+
+### Hinweise
+
+- Am Menü hat sich nichts geändert – die [MENU.md](MENU.md) gilt unverändert.
+- Dem Release liegt ein **`sd_testkit.zip`** bei. Das ist Testmaterial für den
+  SD-Update-Weg (inklusive einer Datei, die absichtlich abgelehnt werden soll)
+  und wird zum normalen Aktualisieren **nicht** gebraucht. Wer einfach nur
+  updaten will, nimmt `vedo_klartext.bin`.
+
+---
+
 ## v1.3.1 (Beta) – 21.08.2026
 
 **Testrelease – funktional identisch zu 1.3.0.** In der Firmware selbst hat
