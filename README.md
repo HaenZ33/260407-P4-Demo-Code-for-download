@@ -3,23 +3,37 @@
 Digitales Kombiinstrument für den VW T3.
 Firmware-Paket zum Flashen auf das ESP32-P4-Ultra Display-Board.
 
-**Version:** 1.3.2 (Beta) · **Stand:** 21.08.2026
+**Version:** 1.3.5 (Beta) · **Stand:** 07.09.2026
+
+➡ **[Neueste Version herunterladen](https://github.com/HaenZ33/vedo-klartext/releases/latest)**
 
 Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 
 ## Was ist drin?
 
+Alle Dateien hängen am [Release](https://github.com/HaenZ33/vedo-klartext/releases/latest)
+und liegen zusätzlich hier im Ordner.
+
 | Datei | Zweck |
 |---|---|
-| `bootloader.bin` | Startet den Chip |
-| `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt |
-| `vedo_klartext_v1.3.2.bin` | Die eigentliche Firmware – für das Flash-Tool |
-| `vedo_klartext.bin` | Dieselbe Firmware für das Update über die SD-Karte |
-| `otadata.bin` | **Neu ab 1.3.0** – merkt sich, welche Firmware gestartet wird |
-| `flash_download_tool.zip` | Das offizielle Flash-Programm von Espressif |
+| `vedo_klartext_v1.3.5.bin` | Die Firmware – **das ist die Datei für die SD-Karte** |
+| `vedo_klartext.bin` | Dieselbe Firmware ohne Versionsnummer im Namen – nur noch nötig, wenn auf deinem Gerät 1.3.4 oder älter läuft (siehe unten) |
+| `bootloader.bin` | Startet den Chip – nur für den Weg über das Flash-Tool |
+| `partition-table.bin` | Sagt dem Chip, wo was im Speicher liegt – nur fürs Flash-Tool |
+| `otadata.bin` | Merkt sich, welche Firmware gestartet wird – nur fürs Flash-Tool |
 | `README.md` | Diese Anleitung |
 | `MENU.md` | Übersicht über alle Menüpunkte und ihre Bedeutung |
 | `CHANGELOG.md` | Was sich von Version zu Version geändert hat |
+
+Das Flash-Programm **`flash_download_tool.zip`** liegt nur noch am Release, nicht
+mehr hier im Ordner – es ist 24 MB groß und ändert sich nie. Wer nur über die
+SD-Karte aktualisiert, braucht es ohnehin nicht.
+
+> **Der schnelle Weg:** Läuft auf deinem Cluster schon 1.3.0 oder neuer, brauchst
+> du von alldem **nur eine einzige Datei** – `vedo_klartext_v1.3.5.bin` auf die
+> SD-Karte, Karte rein, Zündung an. Der Abschnitt
+> [Update über die SD-Karte](#ab-v130-update-über-die-sd-karte) erklärt es.
+> Die Flash-Tool-Anleitung darunter brauchst du nur beim allerersten Mal.
 
 ## Was du brauchst
 
@@ -31,8 +45,10 @@ Was in dieser Version neu ist, steht im [CHANGELOG.md](CHANGELOG.md).
 
 ### 1. Vorbereitung
 
-- Lade die Dateien herunter und entpacke `flash_download_tool.zip` an einen Ort
-  **ohne Leerzeichen oder Umlaute** im Pfad.
+- Lade die Dateien aus dem
+  [Release](https://github.com/HaenZ33/vedo-klartext/releases/latest) herunter
+  und entpacke `flash_download_tool.zip` an einen Ort **ohne Leerzeichen oder
+  Umlaute** im Pfad.
 - Schließe das P4-Board per USB an den Rechner an.
 
 ### 2. Flash-Tool starten
@@ -57,7 +73,7 @@ und ganz links das Häkchen setzen.
 | ✓ | `bootloader.bin` | `0x2000` |
 | ✓ | `partition-table.bin` | `0x8000` |
 | ✓ | `otadata.bin` | `0x11000` |
-| ✓ | `vedo_klartext_v1.3.2.bin` | `0x20000` |
+| ✓ | `vedo_klartext_v1.3.5.bin` | `0x20000` |
 
 > **Die vierte Zeile (`otadata.bin`) ist neu und beim Update von einer älteren
 > Version wichtig.** An dieser Stelle im Speicher lagen bisher Reste, mit denen
@@ -96,7 +112,7 @@ Einstellungen unten:
   (oder RST-Taste am Board drücken)
 - Das Display sollte jetzt mit der Intro-Animation starten
 - Im Boot-Screen und im Menü unten steht die Version –
-  dort kannst du prüfen, ob wirklich **v1.3.2** geflasht wurde
+  dort kannst du prüfen, ob wirklich **v1.3.5** geflasht wurde
 
 ### 7. Einmalig nach dem Update auf v1.3.x
 
@@ -118,16 +134,26 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
 
 **So geht ein Update ab jetzt:**
 
-1. Im Release die Datei **`vedo_klartext.bin`** herunterladen – die **ohne**
-   Versionsnummer im Namen. Sie liegt dort genau für diesen Zweck neben der
-   versionierten Datei.
-   **Nicht umbenennen** – das Cluster sucht exakt nach diesem Namen.
+1. Im Release die Datei **`vedo_klartext_v1.3.5.bin`** herunterladen – die
+   **mit** Versionsnummer im Namen. So siehst du der Karte später an, welcher
+   Stand darauf liegt, ohne das Cluster einzuschalten.
 
-   > Die Datei `vedo_klartext_v1.3.2.bin` ist inhaltlich dieselbe Firmware,
-   > aber nur für den Weg über das Flash-Tool gedacht. Auf der SD-Karte wird
-   > sie nicht erkannt.
+   > **Läuft auf deinem Cluster noch 1.3.4 oder älter?** Dann nimm stattdessen
+   > **`vedo_klartext.bin`** – die Datei ohne Versionsnummer. Ältere Firmware
+   > sucht ausschließlich nach genau diesem Namen und würde die versionierte
+   > Datei nicht finden. Deshalb liegen beide dem Release bei. Welche Version
+   > gerade läuft, steht im Boot-Screen und unten im Menü.
+
+   > **Immer nur eine der beiden Dateien auf die Karte legen.** Liegen beide
+   > darauf, sind sie für das Cluster zwei gleichwertige Kandidaten mit
+   > derselben Version. Kann es sie nicht anhand des Kopierdatums
+   > unterscheiden, tut es lieber nichts, statt zu raten – dann passiert beim
+   > Einschalten einfach kein Update.
 2. Die Datei auf die SD-Karte kopieren, direkt in den Hauptordner
-   (ein Unterordner `update` geht auch).
+   (ein Unterordner `update` geht auch). **Umbenennen ist nicht nötig** – und
+   es bringt auch nichts: welche Version in einer Datei steckt, liest das
+   Cluster aus der Datei selbst, nicht aus dem Namen. Eine alte Firmware in
+   `vedo_klartext_v9.9.9.bin` umzubenennen ändert daran nichts.
 3. Karte ins Cluster stecken, Zündung an.
 4. Das Cluster meldet sich von selbst: es zeigt, welche Version auf der Karte
    liegt und welche gerade läuft, und zählt zehn Sekunden herunter.
@@ -150,14 +176,30 @@ nur um eine neue Firmware aufzuspielen, entfällt ab dieser Version.
   Firmware für ein anderes Gerät wird erkannt, und das Cluster startet normal.
 - Während der Installation zeigt das Display einen Fortschrittsbalken und ist
   solange nicht bedienbar. Das ist normal.
+- **Liegen mehrere gültige Firmware-Dateien auf der Karte, gewinnt die neueste
+  Version.** Alte Stände dürfen also liegen bleiben.
 
 Der Weg über das Flash-Tool oben bleibt als Notnagel bestehen – gebraucht wird
 er im Normalfall nicht mehr.
 
+### Update von Hand anstoßen
+
+Manchmal will man nicht auf den nächsten Neustart warten – oder denselben Stand
+noch einmal aufspielen, etwa nach einem abgebrochenen Versuch. Dafür gibt es
+seit v1.3.5 den Menüpunkt:
+
+**Einstellungen → System → Firmware**
+
+Er durchsucht die Karte sofort und startet den gewohnten Ablauf. Anders als beim
+Einschalten fragt er bei einem Rückschritt nicht lange nach – wer den Punkt
+anwählt, hat sich entschieden. Firmware **vor 1.3.0** lässt sich auch hierüber
+nicht aufspielen; der Grund steht im nächsten Abschnitt.
+
 ### Zurück auf eine ältere Version
 
 Geht ebenfalls über die Karte, solange das Ziel **1.3.0 oder neuer** ist.
-Einfach die ältere `vedo_klartext.bin` auf die Karte legen.
+Einfach die ältere Firmware-Datei auf die Karte legen – und die neuere
+herunternehmen, sonst gewinnt die höhere Version.
 
 Das Cluster behandelt einen Rückschritt aber bewusst anders als ein Update:
 

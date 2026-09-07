@@ -1,6 +1,6 @@
 # Das Bedien-Menü
 
-Übersicht über alle Menüpunkte der Firmware **v1.2.0 (Beta)**.
+Übersicht über alle Menüpunkte der Firmware **v1.3.5 (Beta)**.
 
 Bedient wird alles über den **Dreh-Encoder**.
 
@@ -98,7 +98,7 @@ bist. **Die Liste ändert sich also je nach Screen.**
 | Screen | Elemente, die du ein-/ausschalten kannst |
 |---|---|
 | **Screen 1** | Drehzahl Zeiger · Geschwindigkeit · Temp links · Temp rechts · Uhrzeit · Ladedruck |
-| **Screen 3** | Drehzahl Zeiger · Drehzahl Bogen · Speed · Ladedruck · Ladeluft Temp · Tageskilometerzähler · Uhrzeit |
+| **Screen 3** | Drehzahl Zeiger · Drehzahl Bogen · Speed · Temp links · Temp rechts · Ladedruck · Ladeluft Temp · Tageskilometerzähler · Uhrzeit |
 
 > **Screen 2 gibt es seit v1.2.0 nicht mehr.** Er war im Kern ein Screen 1 mit
 > Tacho und Ladedruck – beides sitzt jetzt auf Screen 1. Der Zyklus geht also
@@ -133,6 +133,13 @@ Radsignal und klein darüber der GPS-Wert.
 |---|---|
 | **Drehzahl Bogen** | `Aus` · `Zeiger` (wandert mit) · `Voll` (fest auf 100 %) |
 | **Speed** | `Rad km/h` · `GPS km/h` · `Beide` · `Aus` |
+| **Temp links** | `Aus` · `Luft` (Außentemperatur) · `Wasser` · `Beide` |
+| **Temp rechts** | `Aus` · `Temp` (Öltemperatur) · `Druck` (Öldruck) · `Beide` |
+
+> **Die Werteblocks gibt es seit v1.3.5 auch hier**, mit **eigener Einstellung**:
+> Was du auf Screen 1 wählst, gilt nicht automatisch auf Screen 3. Das ist
+> Absicht – auf Screen 3 sitzt schon der Ladeluft-Block, da will man links und
+> rechts typischerweise anders belegen.
 
 ---
 
@@ -197,9 +204,17 @@ Damit der Tacho stimmt, muss die Firmware den Abrollumfang kennen.
 | **Querschnitt** | 30 – 85 % |
 | **Felge** | 13 – 20 Zoll |
 | **Offset** | Feintrimm −10,0 … +10,0 % |
+| **Impulse/Umdr** | 1 – 16. Wie viele Magnete pro Radumdrehung am Geber vorbeikommen |
 | **Umfang** | Nur Anzeige – rechnet beim Drehen live mit |
 
 Kontrollwert: **225/55 R16 → 2054 mm**.
+
+> **Impulse/Umdr ist neu ab v1.3.5** und stand vorher fest in der Firmware.
+> Stimmt der Wert nicht, zeigt der Tacho um genau diesen Faktor falsch.
+> **So findest du ihn:** im Debug-Screen die Rohfrequenz ablesen und daneben die
+> GPS-Geschwindigkeit. `Frequenz × 3600 ÷ km/h` ergibt die Impulse pro
+> Kilometer – der Sollwert steht im Protokoll gleich daneben. Kommt nur die
+> Hälfte heraus, sind es halb so viele Magnete wie eingestellt.
 
 > Wird die Umfang-Zeile **rot**, passt die Kombination nicht zusammen und die
 > Firmware rechnet ersatzweise mit dem Standardwert. Einfach zurückdrehen.
@@ -314,6 +329,7 @@ Werkzeuge für Diagnose und Service – im Alltag brauchst du die nicht.
 | **Self-Test** | Siehe unten |
 | **Display kalibrieren** | Bildlage des Displays einstellen |
 | **Panel-Refresh** | Treibt **Nachleuchten** (Image Sticking) aus dem Display, wenn ein Standbild sich eingebrannt hat |
+| **Firmware** | **Neu ab v1.3.5** – sucht sofort auf der SD-Karte nach einer Firmware und spielt sie auf, ohne auf den nächsten Neustart zu warten. Auch derselbe Stand lässt sich damit noch einmal schreiben. Versionen vor 1.3.0 bleiben auch hier gesperrt |
 
 > Der Zyklus lässt sich im laufenden Betrieb wechseln. Temperaturen, Tankinhalt
 > und Trip bleiben dabei stehen, es ändert sich nur das Fahrverhalten.

@@ -5,6 +5,108 @@ Die aktuell installierte Version steht im Boot-Screen und unten im Menü.
 
 ---
 
+## v1.3.5 (Beta) – 07.09.2026
+
+**Der Tacho zeigte zu langsam – das ist behoben.** Dazu: die Werteblocks gibt es
+jetzt auch auf Screen 3, Öldruck und Bordspannung reagieren fast sofort statt
+nach Sekunden, und die Impulse pro Radumdrehung lassen sich endlich im Menü
+einstellen.
+
+> Die Versionen 1.3.3 und 1.3.4 hat es hier nie gegeben – sie wurden gebaut und
+> gefahren, aber nicht veröffentlicht. Alles daraus steckt in dieser Version.
+
+---
+
+### Behoben
+
+**Der Tacho zeigte 30 bis 70 % zu wenig**
+- Die Anzeige lag im Fahrzeug rund die Hälfte zu niedrig und schwankte
+  unberechenbar – mal mehr, mal weniger daneben.
+- Ursache war eine Korrekturstufe, die vermeintlich verschluckte Impulse
+  ergänzen und vermeintlich doppelte zusammenfassen sollte. Sie ist die einzige
+  Stelle, die überhaupt an der Impulszahl dreht – und damit die einzige, die die
+  Anzeige um einen Faktor danebenlegen kann. Geprüft war sie nur am Schreibtisch,
+  nie im Auto. Sie ist jetzt komplett entfernt.
+- **Nachgemessen gegen GPS:** bei 24, 39 und 123 km/h ergaben sich 1950, 2031
+  und 1990 Impulse pro Kilometer – alle drei bei rund 2000, also genau die
+  Wegstreckenzahl des Original-Tachos. Der Geber am Rad arbeitet einwandfrei;
+  die Korrektur löste ein Problem, das dieses Fahrzeug gar nicht hat.
+- Was jetzt bleibt, kann die Geschwindigkeit rechnerisch nicht mehr um einen
+  Faktor verfehlen. Der einzige Fall, der schlechter wird: fällt tatsächlich
+  einmal ein Magnet aus, zeigt der Tacho dann dauerhaft zu wenig – sichtbar und
+  stabil, statt wild zu springen.
+
+**Kleinigkeiten aus den nicht veröffentlichten Zwischenversionen**
+- Die Screens zuckten direkt nach dem Einschalten kurz nach: Platzhaltertexte
+  und eigentlich ausgeblendete Symbole waren einen Wimpernschlag lang zu sehen.
+- Der Firmware-Update-Screen war zu klein geraten und ist jetzt gut lesbar.
+- Zwei Info-Zeilen im Live Monitor verrutschten und überdeckten die Schrift
+  darunter.
+
+### Neu
+
+**Impulse pro Radumdrehung im Menü** – *Einstellungen → Reifen → Impulse/Umdr*
+- Wie viele Magnete an deinem Rad sitzen, stand bisher fest in der Firmware.
+  Stimmt der Wert nicht, zeigt der Tacho falsch – und das war nur durch ein
+  neues Aufspielen zu ändern.
+- So findest du den richtigen Wert: im Debug-Screen die Rohfrequenz ablesen und
+  gleichzeitig die GPS-Geschwindigkeit. `Frequenz × 3600 ÷ km/h` ergibt die
+  Impulse pro Kilometer; der Sollwert steht daneben. Kommt dabei rund die Hälfte
+  des Sollwerts heraus, ist die Zahl der Magnete halb so groß wie eingestellt.
+
+**Die Werteblocks gibt es jetzt auch auf Screen 3**
+- Links und rechts neben den Zeigern, genau wie auf Screen 1: Außen- und
+  Kühlwassertemperatur, Öltemperatur und Öldruck.
+- Die Belegung ist **pro Screen eigenständig** – auf Screen 3 sitzt schon der
+  Ladeluft-Block, da will man typischerweise etwas anderes sehen. Einstellbar
+  unter *Anzeige → Screen 3 → Temp links / Temp rechts*.
+
+**Firmware-Update von Hand anstoßen** – *Einstellungen → System → Firmware*
+- Durchsucht die SD-Karte sofort, statt auf den nächsten Neustart zu warten.
+  Praktisch, um denselben Stand nach einem abgebrochenen Versuch noch einmal
+  aufzuspielen.
+
+**Dateinamen mit Versionsnummer werden auf der Karte erkannt**
+- Bisher musste die Datei auf der SD-Karte exakt `vedo_klartext.bin` heißen. Ab
+  jetzt tut es jeder Name, der mit `vedo_klartext` anfängt und auf `.bin` endet
+  – also auch `vedo_klartext_v1.3.5.bin`. Du siehst der Karte damit an, welcher
+  Stand darauf liegt, ohne das Cluster einzuschalten.
+- **Der Dateiname ist dabei nur eine Beschriftung.** Welche Version wirklich in
+  der Datei steckt, liest das Cluster aus der Datei selbst – Umbenennen ändert
+  daran nichts.
+- Liegen mehrere gültige Dateien auf der Karte, gewinnt die neueste Version.
+- **Aber:** immer nur *eine* Datei der jeweiligen Version auflegen. Zwei
+  identische Stände nebeneinander kann das Cluster nicht auseinanderhalten – es
+  tut dann lieber nichts, statt zu raten.
+
+### Verbessert
+
+**Öldruck und Bordspannung reagieren jetzt fast sofort**
+- Vorher dauerte es bis zu **3,2 Sekunden** (Öldruck) bzw. **4,5 Sekunden**
+  (Bordspannung), bis ein Sprung in der Anzeige angekommen war. Jetzt sind es
+  **unter 0,4 Sekunden**.
+- Die Ursache lag nicht an der Glättung, sondern daran, dass der Messwandler
+  viel zu langsam eingestellt war und deshalb kaum Messungen durchbekam.
+- Auch die Temperaturen sind schneller: Ladeluft rund 0,35 s, Kühlwasser rund
+  1 Sekunde, Öltemperatur rund 1,3 Sekunden statt zuvor über zehn.
+- **Der Tank bleibt bewusst träge** (2 Sekunden) – Diesel schwappt, eine
+  zappelnde Tankanzeige wäre kein Fortschritt.
+
+### Hinweise
+
+- **Diese Version kommt normal über die SD-Karte.** Nimm
+  `vedo_klartext_v1.3.5.bin`, wenn auf deinem Gerät schon 1.3.5 läuft – kommst
+  du von **1.3.4 oder älter**, nimm `vedo_klartext.bin` ohne Versionsnummer.
+  Ältere Firmware kennt nur diesen Namen. Der Ablauf steht in der
+  [README.md](README.md).
+- Am Menü hat sich etwas getan – die [MENU.md](MENU.md) ist auf diesen Stand
+  nachgezogen.
+- **Randnotiz zur Tacho-Genauigkeit:** die Firmware rechnet aus 225/55 R16 einen
+  Umfang, der rund 2,7 % über dem des Original-Tachos liegt. Wer es ganz genau
+  will, stellt *Reifen → Offset* auf −2,6 %.
+
+---
+
 ## v1.3.2 (Beta) – 21.08.2026
 
 **Fehlerbehebung am neuen SD-Update-Weg: Zurückgehen auf eine ältere Version
