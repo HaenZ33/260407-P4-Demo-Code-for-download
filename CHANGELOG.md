@@ -98,8 +98,8 @@ einstellen.
   `vedo_klartext_v1.3.5.bin`, wenn auf deinem Gerät schon 1.3.5 läuft – kommst
   du von **1.3.4 oder älter**, nimm `vedo_klartext.bin` ohne Versionsnummer.
   Ältere Firmware kennt nur diesen Namen. Der Ablauf steht in der
-  [README.md](README.md).
-- Am Menü hat sich etwas getan – die [MENU.md](MENU.md) ist auf diesen Stand
+  [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md).
+- Am Menü hat sich etwas getan – die [MENU.md](https://github.com/HaenZ33/vedo-klartext/blob/main/MENU.md) ist auf diesen Stand
   nachgezogen.
 - **Randnotiz zur Tacho-Genauigkeit:** die Firmware rechnet aus 225/55 R16 einen
   Umfang, der rund 2,7 % über dem des Original-Tachos liegt. Wer es ganz genau
@@ -139,12 +139,12 @@ nichts.
 - Vorher hätte eine vergessene Karte mit einem alten Stand das Cluster im
   Vorbeifahren zurückgedreht.
 
-Der genaue Ablauf steht in der [README.md](README.md) unter „Zurück auf eine
+Der genaue Ablauf steht in der [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md) unter „Zurück auf eine
 ältere Version".
 
 ### Hinweise
 
-- Am Menü hat sich nichts geändert – die [MENU.md](MENU.md) gilt unverändert.
+- Am Menü hat sich nichts geändert – die [MENU.md](https://github.com/HaenZ33/vedo-klartext/blob/main/MENU.md) gilt unverändert.
 - Dem Release liegt ein **`sd_testkit.zip`** bei. Das ist Testmaterial für den
   SD-Update-Weg (inklusive einer Datei, die absichtlich abgelehnt werden soll)
   und wird zum normalen Aktualisieren **nicht** gebraucht. Wer einfach nur
@@ -166,7 +166,7 @@ nichts zu installieren.
 **Wer 1.3.0 laufen hat, verpasst durch Überspringen nichts.** Wer den
 SD-Update-Weg selbst ausprobieren möchte, nimmt sie als Testkandidat: Datei
 `vedo_klartext.bin` aus diesem Release auf die Karte, Karte rein, Zündung an.
-Der Ablauf steht in der [README.md](README.md) unter „Update über die
+Der Ablauf steht in der [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md) unter „Update über die
 SD-Karte".
 
 ---
@@ -195,7 +195,7 @@ aufzuspielen:
   Geber-Kalibrierung und alle Menü-Einstellungen bleiben sonst nicht erhalten.
   Mit der normalen Tabelle überstehen sie den Umstieg.
 
-Die genaue Tabelle steht in der [README.md](README.md) unter Schritt 3.
+Die genaue Tabelle steht in der [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md) unter Schritt 3.
 
 Ab dem nächsten Update läuft alles über die Karte.
 
@@ -242,7 +242,7 @@ Ab dem nächsten Update läuft alles über die Karte.
 ### Hinweise
 
 - Am Menü hat sich in dieser Version nichts geändert – die
-  [MENU.md](MENU.md) gilt unverändert weiter.
+  [MENU.md](https://github.com/HaenZ33/vedo-klartext/blob/main/MENU.md) gilt unverändert weiter.
 - Der Weg über das Flash-Tool bleibt als Notnagel bestehen, falls einmal beide
   Firmware-Stände beschädigt sein sollten.
 - Für den SD-Weg wird eine eingelegte SD-Karte gebraucht. Ohne Karte läuft das
@@ -600,7 +600,7 @@ das Board fehlen:
 **Sonstiges**
 
 - Firmware-Datei heißt jetzt `vedo_klartext_v1.2.0.bin`. Flash-Adressen
-  unverändert – siehe [README.md](README.md).
+  unverändert – siehe [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md).
 - Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.2.0** steht.
 - Status weiterhin **Beta**.
 
@@ -658,7 +658,7 @@ Tacho-Fehler behoben, Uhrzeit nach längerer Standzeit.
   (3,3 V, SDA 28 / SCL 29). Ohne den Sensor ändert sich nichts, die manuelle
   Helligkeit funktioniert wie bisher.
 - Firmware-Datei heißt jetzt `vedo_klartext_v1.1.4.bin`. Flash-Adressen
-  unverändert – siehe [README.md](README.md).
+  unverändert – siehe [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md).
 - Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.1.4** steht.
 - Status weiterhin **Beta**.
 
@@ -700,7 +700,7 @@ verbesserter Needle-Sweep.
 ### Hinweise
 
 - Firmware-Datei heißt jetzt `vedo_klartext_v1.1.1.bin`. Flash-Adressen
-  unverändert – siehe [README.md](README.md).
+  unverändert – siehe [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md).
 - Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.1.1** steht.
 - Status weiterhin **Beta**.
 
@@ -753,7 +753,7 @@ deutlich mehr Sensorik.
 
 - Die Firmware-Datei heißt jetzt `vedo_klartext_v1.1.bin`
   (vorher `p4_instrument_cluster.bin`). Die Flash-Adressen sind
-  unverändert – siehe [README.md](README.md).
+  unverändert – siehe [README.md](https://github.com/HaenZ33/vedo-klartext/blob/main/README.md).
 - Nach dem Flashen im Boot-Screen prüfen, ob dort **v1.1** steht.
 - Status: **Beta.** Nicht alle Sensor-Kombinationen sind im Fahrbetrieb
   langzeiterprobt.

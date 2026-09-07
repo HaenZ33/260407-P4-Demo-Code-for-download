@@ -247,3 +247,14 @@ Wer wirklich auf 1.2.x oder älter zurück will, nimmt dafür das Flash-Tool.
 
 Bei Problemen einfach melden – am besten mit einem Foto vom
 Tool-Fenster, dann lässt sich das schnell klären.
+
+## Zur Nutzung
+
+Diese Firmware ist ein privates Projekt und befindet sich im Beta-Stadium. Sie
+steuert Anzeigen in einem fahrenden Auto – **die Nutzung erfolgt auf eigene
+Gefahr, eine Gewährleistung gibt es nicht.** Verlass dich für sicherheitsrelevante
+Werte nie allein auf dieses Gerät.
+
+Bitte gib die `.bin`-Dateien nicht selbst weiter, sondern verweise auf dieses
+Repository. Sonst landen irgendwann alte Stände aus zweiter Hand auf Karten, und
+niemand weiß mehr, was auf welchem Gerät läuft.
